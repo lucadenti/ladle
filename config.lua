@@ -1,5 +1,5 @@
 return {
 	["hostname"] = "*",
-	["port"] = 8086,
-	["webroot"] = "www/",
+	["port"] = 81,
+	["webroot"] = "/soonsy/www/",
 }

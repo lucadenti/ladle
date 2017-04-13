@@ -33,7 +33,8 @@ local lfs = require('lfs')
 --]]
 
 local function executeLua(code, Env)
-	local func, message = load(code, "code","bt", Env)
+	setfenv(1,Env)
+	local func, message = loadstring(code)
 	if not func
 	then
 		return nil, message
@@ -133,7 +134,7 @@ local function genEnv(_Env, request, config)
 end
 
 local function handler(request, client, config)
-	local Env = genEnv(_ENV, request, config)
+	local Env = genEnv(getfenv(), request, config)
 	
 	if not ladleutil.fileExists(config.webroot .. request.uri)
 	then
@@ -145,6 +146,7 @@ local function handler(request, client, config)
 		return
 	end
 	
+	Env.REMOTE_ADDR = string.match(client:getpeername(),'(%d+%.%d+%.%d+%.%d+)')
 	local cdir = lfs.currentdir()
 	lfs.chdir(config.webroot)
 	handleIt(config.webroot .. request.uri, Env)

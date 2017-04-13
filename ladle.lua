@@ -126,7 +126,7 @@ function loadExtensions()
 
 			if extcode
 			then
-				local extf, message = load(extcode)
+				local extf, message = loadstring(extcode)
 				if not message
 				then
 					local ext = extf()
